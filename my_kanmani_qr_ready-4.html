@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>My Kanmani ❤️</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#030006;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+.background{
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at 50% 47%,rgba(255,40,145,.12),transparent 31%),
+        radial-gradient(circle at 15% 20%,rgba(130,35,255,.08),transparent 25%),
+        #030006;
+}
+
+.background:before{
+    content:"";
+    position:absolute;
+    inset:-50%;
+    background-image:radial-gradient(rgba(255,255,255,.75) 1px,transparent 1px);
+    background-size:44px 44px;
+    opacity:.23;
+    animation:stars 35s linear infinite;
+}
+
+@keyframes stars{
+    to{transform:translate(44px,44px)}
+}
+
+/* TITLE */
+
+.title{
+    position:absolute;
+    top:8%;
+    width:100%;
+    text-align:center;
+    z-index:20;
+}
+
+.title h1{
+    font-size:clamp(32px,8vw,58px);
+    font-weight:700;
+    letter-spacing:3px;
+    color:#ffc1df;
+    text-shadow:
+        0 0 8px rgba(255,105,180,.7),
+        0 0 25px rgba(255,55,150,.35);
+}
+
+.title p{
+    margin-top:9px;
+    font-size:clamp(11px,3vw,16px);
+    letter-spacing:6px;
+    color:#ffacd3;
+}
+
+/* HEART */
+
+.heart-area{
+    position:absolute;
+    width:min(94vw,620px);
+    height:min(86vw,570px);
+    top:49%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    animation:heartbeatScale 1.55s ease-in-out infinite;
+}
+
+@keyframes heartbeatScale{
+    0%,100%{transform:translate(-50%,-50%) scale(1)}
+    9%{transform:translate(-50%,-50%) scale(1.045)}
+    18%{transform:translate(-50%,-50%) scale(1)}
+    27%{transform:translate(-50%,-50%) scale(1.025)}
+    36%{transform:translate(-50%,-50%) scale(1)}
+}
+
+/*
+  The heart is made ONLY from the repeated text.
+  No rotated square/pseudo-elements are used.
+  This fixes the distorted/flattened heart shape.
+*/
+
+.heart-text{
+    position:absolute;
+    inset:0;
+}
+
+.word{
+    position:absolute;
+    transform-origin:center center;
+    white-space:nowrap;
+    color:#ffb2d8;
+    font-weight:700;
+    font-size:clamp(7px,1.75vw,14px);
+    line-height:1;
+    text-shadow:
+        0 0 4px #ff75b9,
+        0 0 10px rgba(255,50,145,.8);
+    opacity:0;
+    animation:wordIn .9s forwards;
+}
+
+@keyframes wordIn{
+    to{opacity:.92}
+}
+
+/* Soft glow behind heart */
+
+.heart-glow{
+    position:absolute;
+    width:62%;
+    height:52%;
+    left:19%;
+    top:28%;
+    border-radius:50%;
+    background:rgba(255,30,145,.14);
+    filter:blur(35px);
+    animation:glowPulse 1.55s ease-in-out infinite;
+}
+
+@keyframes glowPulse{
+    50%{transform:scale(1.12);opacity:.85}
+}
+
+/* Small center heart */
+
+.center-heart{
+    position:absolute;
+    left:50%;
+    top:51%;
+    transform:translate(-50%,-50%);
+    font-size:clamp(35px,9vw,65px);
+    color:#ff72b5;
+    text-shadow:
+        0 0 10px #ff72b5,
+        0 0 30px #ff238d;
+    animation:centerHeart 1.55s ease-in-out infinite;
+    z-index:10;
+}
+
+@keyframes centerHeart{
+    0%,100%{transform:translate(-50%,-50%) scale(1)}
+    9%{transform:translate(-50%,-50%) scale(1.18)}
+    18%{transform:translate(-50%,-50%) scale(1)}
+    27%{transform:translate(-50%,-50%) scale(1.1)}
+    36%{transform:translate(-50%,-50%) scale(1)}
+}
+
+/* FLOATING HEARTS */
+
+.floating-heart{
+    position:fixed;
+    bottom:-50px;
+    color:#ff6eae;
+    pointer-events:none;
+    z-index:4;
+    filter:drop-shadow(0 0 8px #ff348f);
+    animation:floatUp linear forwards;
+}
+
+@keyframes floatUp{
+    0%{
+        transform:translateY(0) scale(.5);
+        opacity:0;
+    }
+    12%{opacity:.7}
+    88%{opacity:.55}
+    100%{
+        transform:translateY(-115vh) translateX(var(--drift)) scale(1.2) rotate(20deg);
+        opacity:0;
+    }
+}
+
+/* BOTTOM */
+
+.message{
+    position:absolute;
+    bottom:7%;
+    width:90%;
+    text-align:center;
+    color:#ffd0e5;
+    font-size:clamp(11px,3vw,16px);
+    letter-spacing:2px;
+}
+
+/* MUSIC */
+
+.music-button{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    border:1px solid rgba(255,125,190,.75);
+    background:rgba(255,50,145,.12);
+    color:#fff;
+    font-size:22px;
+    z-index:100;
+    cursor:pointer;
+    backdrop-filter:blur(8px);
+    box-shadow:0 0 18px rgba(255,50,145,.35);
+}
+
+.music-button.playing{
+    animation:buttonPulse 1.55s ease-in-out infinite;
+}
+
+@keyframes buttonPulse{
+    0%,100%{box-shadow:0 0 12px rgba(255,50,145,.35)}
+    50%{box-shadow:0 0 30px rgba(255,50,145,.85)}
+}
+
+@media(max-width:600px){
+    .heart-area{
+        width:96vw;
+        height:88vw;
+    }
+
+    .message{
+        bottom:7%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="title">
+    <h1>My Kanmani ❤️</h1>
+    <p>JUST FOR YOU</p>
+</div>
+
+<div class="heart-area">
+    <div class="heart-glow"></div>
+    <div class="heart-text" id="heartText"></div>
+    <div class="center-heart">♥</div>
+</div>
+
+<div class="message">
+    Every little heartbeat says your name ❤️
+</div>
+
+<button class="music-button" id="musicButton" aria-label="Play heartbeat">
+    🫀
+</button>
+
+<script>
+/* =========================================================
+   PERFECT TEXT HEART
+   Uses a mathematical heart curve, so the text itself
+   follows the actual heart outline.
+========================================================= */
+
+const container = document.getElementById("heartText");
+const phrase = "My Kanmani";
+const count = 150;
+
+for(let i=0;i<count;i++){
+
+    const word = document.createElement("span");
+    word.className = "word";
+    word.textContent = phrase;
+
+    /*
+      Two passes:
+      - first half creates the outer heart outline
+      - second half creates a slightly smaller inner outline
+      This makes the heart look fuller while staying recognizable.
+    */
+
+    const pass = i < count/2 ? 0 : 1;
+    const j = i % (count/2);
+
+    const t = Math.PI * 2 * j / (count/2);
+
+    let x =
+        16 * Math.pow(Math.sin(t),3);
+
+    let y =
+        -(13*Math.cos(t)
+        -5*Math.cos(2*t)
+        -2*Math.cos(3*t)
+        -Math.cos(4*t));
+
+    const scale = pass === 0 ? 1 : 0.86;
+
+    x *= scale;
+    y *= scale;
+
+    /*
+      Convert mathematical coordinates to the screen.
+      These values preserve the heart proportions.
+    */
+
+    const left = 50 + x * 2.55;
+    const top  = 50 + y * 2.55;
+
+    word.style.left = left + "%";
+    word.style.top = top + "%";
+
+    /*
+      Rotate text approximately along the heart curve.
+    */
+
+    const nextT = t + 0.015;
+
+    const nx =
+        16 * Math.pow(Math.sin(nextT),3) * scale;
+
+    const ny =
+        -(13*Math.cos(nextT)
+        -5*Math.cos(2*nextT)
+        -2*Math.cos(3*nextT)
+        -Math.cos(4*nextT)) * scale;
+
+    const angle =
+        Math.atan2(ny-y,nx-x) * 180 / Math.PI;
+
+    word.style.transform =
+        `translate(-50%,-50%) rotate(${angle}deg)`;
+
+    word.style.animationDelay =
+        (i * 0.012) + "s";
+
+    word.style.fontSize =
+        (8 + Math.random()*4) + "px";
+
+    container.appendChild(word);
+}
+
+
+/* =========================================================
+   FLOATING HEARTS
+========================================================= */
+
+function createFloatingHeart(){
+
+    const h=document.createElement("div");
+
+    h.className="floating-heart";
+
+    h.textContent=[
+        "♥","♡","❤","💕","💗"
+    ][Math.floor(Math.random()*5)];
+
+    h.style.left =
+        Math.random()*100+"vw";
+
+    h.style.fontSize =
+        (10+Math.random()*20)+"px";
+
+    h.style.animationDuration =
+        (7+Math.random()*8)+"s";
+
+    h.style.setProperty(
+        "--drift",
+        (Math.random()*150-75)+"px"
+    );
+
+    document.body.appendChild(h);
+
+    setTimeout(()=>h.remove(),16000);
+}
+
+setInterval(createFloatingHeart,850);
+
+
+/* =========================================================
+   SIMPLE HEARTBEAT SOUND
+   No song.
+   Just a soft "lub-dub" heartbeat.
+========================================================= */
+
+let audioContext = null;
+let masterGain = null;
+let heartbeatTimer = null;
+let heartbeatPlaying = false;
+
+function thump(time, frequency, volume, duration){
+
+    const oscillator =
+        audioContext.createOscillator();
+
+    const gain =
+        audioContext.createGain();
+
+    oscillator.type = "sine";
+
+    oscillator.frequency.setValueAtTime(
+        frequency,
+        time
+    );
+
+    /*
+      Quick low thump.
+    */
+
+    gain.gain.setValueAtTime(
+        0.0001,
+        time
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        volume,
+        time + 0.025
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        time + duration
+    );
+
+    oscillator.connect(gain);
+    gain.connect(masterGain);
+
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.03);
+}
+
+function heartbeat(){
+
+    if(!heartbeatPlaying) return;
+
+    const now =
+        audioContext.currentTime + 0.03;
+
+    /*
+      Lub
+    */
+    thump(
+        now,
+        75,
+        0.14,
+        0.16
+    );
+
+    /*
+      Dub
+    */
+    thump(
+        now + 0.19,
+        62,
+        0.11,
+        0.14
+    );
+
+    /*
+      Match the visual heartbeat.
+    */
+
+    heartbeatTimer =
+        setTimeout(
+            heartbeat,
+            1550
+        );
+}
+
+const musicButton =
+    document.getElementById("musicButton");
+
+musicButton.addEventListener("click",()=>{
+
+    if(!audioContext){
+
+        audioContext =
+            new (
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+
+        masterGain =
+            audioContext.createGain();
+
+        masterGain.gain.value =
+            0.42;
+
+        masterGain.connect(
+            audioContext.destination
+        );
+    }
+
+    if(audioContext.state === "suspended"){
+        audioContext.resume();
+    }
+
+    if(!heartbeatPlaying){
+
+        heartbeatPlaying = true;
+
+        musicButton.textContent = "🔊";
+
+        musicButton.classList.add("playing");
+
+        heartbeat();
+
+    }else{
+
+        heartbeatPlaying = false;
+
+        clearTimeout(heartbeatTimer);
+
+        masterGain.gain.setTargetAtTime(
+            0.0001,
+            audioContext.currentTime,
+            0.08
+        );
+
+        musicButton.textContent = "🫀";
+
+        musicButton.classList.remove("playing");
+
+        setTimeout(()=>{
+            if(!heartbeatPlaying){
+                masterGain.gain.value = 0.42;
+            }
+        },500);
+    }
+});
+</script>
+
+</body>
+</html>
